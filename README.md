@@ -65,6 +65,8 @@ _Coming soon..._
 
 - [x] Project setup
 - [x] Upload UI
+- [x] Connect HF
+- [x] Implement API route
 - [ ] AI ingredient detection
 - [ ] Recipe generation
 - [ ] User accounts
