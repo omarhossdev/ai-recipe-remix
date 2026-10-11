@@ -15,7 +15,7 @@ Turn a photo of your fridge into recipes you can cook **right now**.
 - **Next.js** — React framework (App Router)
 - **TypeScript** — type safety
 - **Tailwind CSS** — styling
-- **OpenAI API** — vision + recipe generation
+- **Hugging Face Interface API** — vision + recipe generation
 - **Supabase** — auth + database
 - **Vercel** — deployment
 
@@ -28,15 +28,15 @@ Turn a photo of your fridge into recipes you can cook **right now**.
 
 ### Install
 
-\`\`\`bash
+```bash
 pnpm install
-\`\`\`
+```
 
 ### Run dev server
 
-\`\`\`bash
+```bash
 pnpm dev
-\`\`\`
+```
 
 Open [http://localhost:3000](http://localhost:3000)
 
@@ -44,18 +44,18 @@ Open [http://localhost:3000](http://localhost:3000)
 
 Create a `.env.local` file:
 
-\`\`\`
-OPENAI_API_KEY=your_key_here
+```
+HF_TOKEN=your_hugging_face_token_here
 NEXT_PUBLIC_SUPABASE_URL=your_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_key
-\`\`\`
+```
 
 ## 📦 Build
 
-\`\`\`bash
+```bash
 pnpm build
 pnpm start
-\`\`\`
+```
 
 ## 📸 Screenshots
 
@@ -73,4 +73,4 @@ _Coming soon..._
 
 ## 📄 License
 
-MIT
+[MIT](./LICENSE)
