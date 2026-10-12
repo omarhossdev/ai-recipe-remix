@@ -4,10 +4,48 @@ import { useState, ChangeEvent } from 'react';
 
 export default function Home() {
   const [preview, setPreview] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [caption, setCaption] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0];
-    if (file) setPreview(URL.createObjectURL(file)) // previewing without upload
+    if (file) { 
+      setPreview(URL.createObjectURL(file)) // previewing without upload
+      setFile(file) // the actual file object we send to the API
+      setCaption("") // reset old results
+      setError("")
+    }
+  }
+
+  const handleAnalyze = async () => {
+    if (!file) return;
+
+    setIsLoading(true);
+    setError("");
+    setCaption("");
+
+    try {
+      const formData = new FormData()
+      formData.append("image", file);
+
+      const res = await fetch("/api/analyze", {
+        method: "POST",
+        body: formData
+      })
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || "Something went wrong");
+
+      setCaption(data.caption);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unknown error");
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -71,6 +109,34 @@ export default function Home() {
             </label>
           </div>
         </form>
+
+        {file && (
+          <div className="flex justify-center pb-4">
+            <button
+              onClick={handleAnalyze}
+              disabled={isLoading}
+              className="rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white shadow-md transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isLoading ? "🔍 Analyzing..." : "✨ Analyze Ingredients"}
+            </button>
+          </div>
+        )}
+
+        {/* Error */}
+        {error && (
+          <p className="text-center text-red-600">{error}</p>
+        )}
+
+
+        {/* Caption */}
+        {caption && (
+          <div className="mx-auto mt-6 max-w-md rounded-2xl bg-white p-6 shadow-md">
+            <h3 className="mb-3 text-lg font-bold text-gray-800">
+              🥕 Caption
+            </h3>
+            <p className='rounded-full bg-indigo-100 px-3 py-1 text-sm text-indigo-800'>{caption}</p>
+          </div>
+        )}
       </section>
     </main>
   );
